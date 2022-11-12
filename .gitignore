@@ -134,6 +134,7 @@ dmypy.json
 # Emacs
 **/*~
 
+notebooks/
 __pycache__/
 .ipynb_checkpoints/
 notebooks/data
