@@ -1,4 +1,5 @@
 import spacy
+from spacy.symbols import ORTH
 import textabstractor
 from contextlib import contextmanager
 from pluggy import HookimplMarker
@@ -33,6 +34,10 @@ class TextAbstractor:
         self.span_ruler = self.nlp.add_pipe("span_match_ruler", after="lemmatizer")
         self.negex = self.nlp.add_pipe("negex", after="span_match_ruler")
         self.relextractor = self.nlp.add_pipe("relextractor", after="negex")
+
+        # Add tokenization special cases
+        self.nlp.tokenizer.add_special_case("in-", [{ORTH: "in"}, {ORTH: "-"}])
+        self.nlp.tokenizer.add_special_case("-situ", [{ORTH: "-"}, {ORTH: "situ"}])
 
     def clear(self):
         self.span_ruler.clear()
