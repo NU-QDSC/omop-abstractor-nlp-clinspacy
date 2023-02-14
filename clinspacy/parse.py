@@ -121,7 +121,7 @@ def parse_section(
     patterns = []
     if section_metadata.section_mention_type == "Alphabetic":
         patterns.append(
-            {"REGEX_TEXT": re.compile(r"^.{0,21}\b[A-Z][.:)]", re.MULTILINE)}
+            {"REGEX_TEXT": re.compile(r"^.{0,21}\b([A-Z])[.:)]", re.MULTILINE)}
         )
     elif section_metadata.section_mention_type == "Token":
         with nlp.select_pipes(enable=["tagger", "attribute_ruler", "lemmatizer"]):

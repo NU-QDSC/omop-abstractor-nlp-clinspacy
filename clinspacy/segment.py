@@ -65,7 +65,7 @@ class Sectionizer:
             if regex_patterns:
                 for p in regex_patterns:
                     for m in p.finditer(doc.text):
-                        span = doc.char_span(m.start(), m.end(), alignment_mode="expand")
+                        span = doc.char_span(m.start(1), m.end(1), alignment_mode="expand")
                         section_headers.append(span)
                         section_header_names.append(name)
             if matcher_patterns:
