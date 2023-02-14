@@ -27,7 +27,8 @@ setup(
     python_requires=">=3.9.0",
     install_requires=[
         "textabstractor",
-        "spacy>=3.4",
+        "spacy>=3.5",
+        "chardet",
         "pluggy",
         "pysbd",
     ],
