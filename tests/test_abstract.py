@@ -24,8 +24,8 @@ def test_pipeline_loaded(abstractor):
 @pytest.mark.parametrize(
     "note_number, expected",
     [
-        (0, (7450, 1537, 148)),
-        (1, (11316, 2297, 192)),
+        (0, (7450, 1669, 148)),
+        (1, (11316, 2363, 192)),
         (2, (1691, 335, 24)),
     ],
 )

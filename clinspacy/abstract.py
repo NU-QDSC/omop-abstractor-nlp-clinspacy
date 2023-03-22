@@ -35,9 +35,14 @@ class TextAbstractor:
         self.negex = self.nlp.add_pipe("negex", after="span_match_ruler")
         self.relextractor = self.nlp.add_pipe("relextractor", after="negex")
 
-        # Add tokenization special cases
+        # Add tokenization rules and special cases
         self.nlp.tokenizer.add_special_case("in-", [{ORTH: "in"}, {ORTH: "-"}])
         self.nlp.tokenizer.add_special_case("-situ", [{ORTH: "-"}, {ORTH: "situ"}])
+
+        prefixes = list(self.nlp.Defaults.prefixes)
+        prefixes.extend(spacy.lang.char_classes.HYPHENS)
+        prefix_re = spacy.util.compile_prefix_regex(prefixes)
+        self.nlp.tokenizer.prefix_search = prefix_re.search
 
     def clear(self):
         self.span_ruler.clear()
