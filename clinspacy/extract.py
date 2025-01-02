@@ -2,7 +2,6 @@ from spacy.language import Language
 from spacy.tokens import Span, SpanGroup
 from clinspacy.match import SpanMatcher
 
-
 @Language.factory("relextractor")
 class RelationExtractor:
     def __init__(self, nlp: Language, name: str):
@@ -11,6 +10,10 @@ class RelationExtractor:
     @property
     def name(self):
         return self._name
+
+    @name.setter
+    def name(self, value: str):
+        self._name = value
 
     def __call__(self, doc):
         for name_group, value_patterns in [
@@ -44,7 +47,6 @@ class RelationExtractor:
                                 )
                             )
                         name_group.attrs["value_map"][span] = group
-
                     # look for values on the left side of the span
                     left_span = doc[span.sent.start : span.start]
                     left_span_as_doc = left_span.as_doc()
@@ -67,5 +69,4 @@ class RelationExtractor:
                                 )
                             )
                         name_group.attrs["value_map"][span] = group
-
         return doc
