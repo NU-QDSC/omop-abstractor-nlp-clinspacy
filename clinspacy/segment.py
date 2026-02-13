@@ -76,10 +76,18 @@ class Sectionizer:
                     section_headers.append(doc[start:end])
                     section_header_names.append(name)
 
-        sorted_section_headers = sorted(section_headers, key=lambda s: s.start)
-        for idx, span in enumerate(sorted_section_headers):
-            if idx + 1 < len(sorted_section_headers):
-                end = sorted_section_headers[idx + 1].start
+        paired = sorted(zip(section_headers, section_header_names), key=lambda p: p[0].start)
+        doc.spans["section_headers"] = []
+        doc.spans["section_headers"].attrs["names"] = []
+        section_headers = doc.spans["section_headers"]
+        section_header_names = doc.spans["section_headers"].attrs["names"]
+        for span, name in paired:
+            section_headers.append(span)
+            section_header_names.append(name)
+
+        for idx, span in enumerate(section_headers):
+            if idx + 1 < len(section_headers):
+                end = section_headers[idx + 1].start
             else:
                 end = len(doc)
             end = self.find_section_break(doc, span.start, end)
