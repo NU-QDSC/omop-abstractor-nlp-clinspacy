@@ -81,7 +81,7 @@ def apply_nlp(request: SuggestRequest) -> Doc:
                 abstractor.span_ruler.add(name_patterns["predicate"], name_patterns)
             else:
                 for vp in value_patterns:
-                    abstractor.span_ruler.add(vp["value"], vp)
+                    abstractor.span_ruler.add(f"{vp['predicate']}:{vp['value']}", vp)
         yield abstractor.nlp(request.text)
     finally:
         pass
