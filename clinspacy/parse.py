@@ -125,12 +125,12 @@ def parse_section(
         )
     elif section_metadata.section_mention_type == "Numeric":
         patterns.append(
-            {"REGEX_TEXT": re.compile(r"^.{0,21}\b(\d+)[.:)]", re.MULTILINE)}
+            {"REGEX_TEXT": re.compile(r"^.{0,21}\b(\d+)[.:)](?!\d)", re.MULTILINE)}
         )
     elif section_metadata.section_mention_type == "AlphaNumeric":
         # Supports both alphabetic (A., B.) and numeric (1., 2.) specimen sections
         patterns.append(
-            {"REGEX_TEXT": re.compile(r"^.{0,21}\b([A-Z]|\d+)[.:)]", re.MULTILINE)}
+            {"REGEX_TEXT": re.compile(r"^.{0,21}\b([A-Z]|\d+)[.:)](?!\d)", re.MULTILINE)}
         )
     elif section_metadata.section_mention_type == "Token":
         with nlp.select_pipes(enable=["tagger", "attribute_ruler", "lemmatizer"]):
