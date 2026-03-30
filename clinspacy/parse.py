@@ -81,8 +81,9 @@ def parse_name_list_schema(schema: AbstractionSchema, nlp: Language) -> Dict:
         "object_type": "list",
     }
     with nlp.select_pipes(enable=["tagger", "attribute_ruler", "lemmatizer"]):
-        # this is to deal with values like "glioblastoma (9448/3)"
-        value = re.sub(r"\(.+\)", "", schema.preferred_name).strip()
+        # Strip ICD-O style codes like (9448/3) or (c50.9) but preserve
+        # descriptive text in parentheses like (Exocrine) or (DCIS)
+        value = re.sub(r"\([Cc]?\d[\d./?]+\)", "", schema.preferred_name).strip()
         pattern = parse_variant(Variant(value=value, case_sensitive=False), nlp)
         name_patterns["patterns"].append(pattern)
         for variant in schema.predicate_variants:
@@ -102,8 +103,9 @@ def parse_value_list_schema(schema: AbstractionSchema, nlp: Language) -> List[Di
                 "rule_type": "value",
                 "object_type": "list",
             }
-            # this is to deal with values like "glioblastoma (9448/3)"
-            value = re.sub(r"\(.+\)", "", object_value.value).strip()
+            # Strip ICD-O style codes like (9448/3) or (c50.9) but preserve
+            # descriptive text in parentheses like (Exocrine) or (DCIS)
+            value = re.sub(r"\([Cc]?\d[\d./?]+\)", "", object_value.value).strip()
             pattern = parse_variant(
                 Variant(value=value, case_sensitive=object_value.case_sensitive), nlp
             )
