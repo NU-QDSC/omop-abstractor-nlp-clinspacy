@@ -81,10 +81,7 @@ def parse_name_list_schema(schema: AbstractionSchema, nlp: Language) -> Dict:
         "object_type": "list",
     }
     with nlp.select_pipes(enable=["tagger", "attribute_ruler", "lemmatizer"]):
-        # Strip ICD-O style codes like (9448/3) or (c50.9) but preserve
-        # descriptive text in parentheses like (Exocrine) or (DCIS)
-        value = re.sub(r"\([Cc]?\d[\d./?]+\)", "", schema.preferred_name).strip()
-        pattern = parse_variant(Variant(value=value, case_sensitive=False), nlp)
+        pattern = parse_variant(Variant(value=schema.preferred_name, case_sensitive=False), nlp)
         name_patterns["patterns"].append(pattern)
         for variant in schema.predicate_variants:
             pattern = parse_variant(variant, nlp)
@@ -103,11 +100,8 @@ def parse_value_list_schema(schema: AbstractionSchema, nlp: Language) -> List[Di
                 "rule_type": "value",
                 "object_type": "list",
             }
-            # Strip ICD-O style codes like (9448/3) or (c50.9) but preserve
-            # descriptive text in parentheses like (Exocrine) or (DCIS)
-            value = re.sub(r"\([Cc]?\d[\d./?]+\)", "", object_value.value).strip()
             pattern = parse_variant(
-                Variant(value=value, case_sensitive=object_value.case_sensitive), nlp
+                Variant(value=object_value.value, case_sensitive=object_value.case_sensitive), nlp
             )
             object_patterns["patterns"].append(pattern)
             for variant in object_value.object_value_variants:
